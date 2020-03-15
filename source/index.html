@@ -3,32 +3,34 @@
 	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 </head>
 
-<body>
-	<input type="text" id="dataX" value="1, 2, 3, 4", onchange=plot()>
-	<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+<body onload=plot('idPlotDiv0')>
+
+	<p id="debugDiv"></p>
+	<!-- <p>X: <input type="text" id="dataX" value="1, 2, 3, 4", onchange=plot() label="X"></p> -->
+	<p>Y: <input type="text" id="dataY" value="1, 2, 3, 4", onchange=plot('idPlotDiv0') label="Y"></p>    
+	<div id='idPlotDiv0'><!-- Plotly chart will be drawn inside this DIV --></div>
 </body>
 
 <script>
 
-function plot() {
-	var dataX = document.getElementById('dataX').value //.split(", ");
-	var dataY = dataX.match(/\d+(?:\.\d+)?/g).map(Number)
+function plot(idPlotDiv) {
+	
+	// var dataX = document.getElementById('dataX').value.match(/\d+(?:\.\d+)?/g).map(Number)
+	var dataY = document.getElementById('dataY').value.match(/\d+(?:\.\d+)?/g).map(Number)
+	var dataX = [...Array(dataY.length).keys()]
+	
+	document.getElementById("debugDiv").innerHTML  = idPlotDiv0;	
+	// document.write(dataY.size)
 
 	var trace1 = {
-	  x: [1, 2, 3, 4],
+	  x: dataX,
 	  y: dataY,
 	  type: 'scatter'
 	};
 
-	var trace2 = {
-	  x: [1, 2, 3, 4],
-	  y: [16, 5, 11, 9],
-	  type: 'scatter'
-	};
+	var data = [trace1];
 
-	var data = [trace1, trace2];
-
-	Plotly.newPlot('myDiv', data);
+	Plotly.newPlot(idPlotDiv, data);
 }
 
 </script>
