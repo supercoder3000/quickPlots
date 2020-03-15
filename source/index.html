@@ -3,23 +3,39 @@
 	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 </head>
 
-<body onload=plot('idPlotDiv0')>
-
-	<p id="debugDiv"></p>
+<body onload=plot()>
+	<p id="pDebug"></p>
 	<!-- <p>X: <input type="text" id="dataX" value="1, 2, 3, 4", onchange=plot() label="X"></p> -->
-	<p>Y: <input type="text" id="dataY" value="1, 2, 3, 4", onchange=plot('idPlotDiv0') label="Y"></p>    
-	<div id='idPlotDiv0'><!-- Plotly chart will be drawn inside this DIV --></div>
+	<p id="pDataY">Y: <input type="text" id="dataY" value="1, 2, 3, 4", onchange=plot() label="Y"></p>    
+	
 </body>
 
 <script>
 
-function plot(idPlotDiv) {
+var idPlotDiv = 0
+
+function getTime()
+{
+	var date = new Date();
+	
+	hh = date.getHours();
+	mm = date.getMinutes();
+	ss = date.getSeconds();
+	 
+	if(hh < 10){hh = '0'+hh;} 
+	if(mm < 10){mm = '0'+mm;} 
+	if(ss < 10){ss = '0'+ss;}
+	
+	return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ' ' + hh+':'+mm+':'+ss;
+}
+
+function plot() {
 	
 	// var dataX = document.getElementById('dataX').value.match(/\d+(?:\.\d+)?/g).map(Number)
 	var dataY = document.getElementById('dataY').value.match(/\d+(?:\.\d+)?/g).map(Number)
 	var dataX = [...Array(dataY.length).keys()]
 	
-	document.getElementById("debugDiv").innerHTML  = idPlotDiv0;	
+	document.getElementById("pDebug").innerHTML  = idPlotDiv + "";	
 	// document.write(dataY.size)
 
 	var trace1 = {
@@ -29,8 +45,21 @@ function plot(idPlotDiv) {
 	};
 
 	var data = [trace1];
+	
+	var div = document.createElement("DIV");
+	div.id = "idPlotDiv" + idPlotDiv
+	
+	var pDataY = document.getElementById('pDataY');
+	document.body.insertBefore(div, pDataY.nextSibling); 	
 
-	Plotly.newPlot(idPlotDiv, data);
+	var layout = {
+		title: getTime()
+	};
+	
+	Plotly.newPlot(div.id, data, layout);
+
+	
+	idPlotDiv++;
 }
 
 </script>
