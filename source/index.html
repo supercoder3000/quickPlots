@@ -3,19 +3,31 @@
 	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 </head>
 
-<body onload=plot()>
+<body>
 	<p id="pDebug"></p>
 	<!-- <p>X: <input type="text" id="dataX" value="1, 2, 3, 4", onchange=plot() label="X"></p> -->
-	<p id="pDataY">Y: <input type="text" id="dataY" value="1, 2, 3, 4", onKeyPress="plot(event)", label="Y"> label: <input type="text" id="title" value=" ", , onKeyPress="plot(event)", label="title"></p>    
-	
+	<p id="pDataY">
+            Y: <input type="text" id="dataY" value="1, 2, 3, 4", onKeyPress="plot(event)", label="Y" />
+            label: <input type="text" id="title" value=" ", onKeyPress="plot(event)", label="title" />
+            <button type="button" onclick="clearPlots()">Clear plots</button> 
+        </p>    	
 </body>
 
 <script>
 
 var idPlotDiv = 0
 
-function getTime()
-{
+function clearPlots() {
+	for(var ii = 0; ii < idPlotDiv; ii++) {
+	   var element = document.getElementById("idPlotDiv" + ii);
+ 	   element.parentNode.removeChild(element);
+        }
+
+	idPlotDiv = 0;
+	// document.getElementById("pDebug").innerHTML  = "clear";
+}
+
+function getTime() {
 	var date = new Date();
 	
 	hh = date.getHours();
@@ -41,7 +53,7 @@ function plot(e) {
 
 	var title = document.getElementById('title').value;
 	
-	document.getElementById("pDebug").innerHTML  = idPlotDiv + "";	
+	// document.getElementById("pDebug").innerHTML  = idPlotDiv + "";	
 	// document.write(dataY.size)
 
 	var trace1 = {
@@ -65,7 +77,6 @@ function plot(e) {
 	};
 	
 	Plotly.newPlot(divPlot.id, data, layout);
-
 	
 	idPlotDiv++;
 }
